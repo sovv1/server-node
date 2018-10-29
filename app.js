@@ -5,8 +5,10 @@ import helmet from 'helmet';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 import compression from 'compression';
-import routes from './routes';
+import router from './routes';
 import './database';
+import './helpers/passport';
+
 const app = express();
 
 // view engine setup
@@ -20,7 +22,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(helmet());
 app.use(compression());
 
-app.use('/', routes);
+app.use('/', router);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

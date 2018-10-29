@@ -1,35 +1,24 @@
-import { getUsers, createUser, getUser } from '../models/user';
+import passport from 'passport';
+import jwt from 'jsonwebtoken';
 
-const addUser = async (req, res, next) => {
-    try {
-        const { user } = await createUser(req.body);
-        res.json(user);
-    } catch(e) {
-        res.json(e);
-    }
-};
-
-const getAllUsers = async (req, res, next) => {
-    try {
-        const { users } = await getUsers();
-        res.json(users);
-    } catch(e) {
-        res.json(e);
-    }
-};
-
-const getUserByID = async (req, res, next) => {
-    const { id } = req.params;
-    try {
-        const { user } = await getUser(id);
-        res.json(user);
-    } catch(e) {
-        res.json(e);
-    }
+const signIn = (req, res, next) => {
+    passport.authenticate('local', { session: false }, (err, user, info) => {
+        if (err || !user) {
+            return res.status(400).json({
+                message: info ? info.message : 'Login failed',
+                user   : user
+            });
+        }
+       req.login(user, { session: false }, err => {
+           if (err) {
+               return next(err);
+           }
+           const token = jwt.sign(user.toJSON(), 'your_jwt_secret', { expiresIn: 604000 });
+           return res.json({ user, token });
+       });
+    })(req, res);
 };
 
 export default {
-    addUser,
-    getUserByID,
-    getAllUsers
+    signIn
 };
