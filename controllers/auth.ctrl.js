@@ -1,5 +1,6 @@
 import passport from 'passport';
 import jwt from 'jsonwebtoken';
+import config from "../config";
 
 const signIn = (req, res, next) => {
     passport.authenticate('local', { session: false }, (err, user, info) => {
@@ -13,7 +14,7 @@ const signIn = (req, res, next) => {
            if (err) {
                return next(err);
            }
-           const token = jwt.sign(user.toJSON(), 'your_jwt_secret', { expiresIn: 604000 });
+           const token = jwt.sign(user.toJSON(), config.jwt_secret, { expiresIn: 604000 });
            return res.json({ user, token });
        });
     })(req, res);

@@ -2,6 +2,7 @@ import passport from 'passport';
 import UserModel from '../models/schemas/userSchema';
 import Strategy from 'passport-local';
 import passportJWT from 'passport-jwt';
+import config from '../config';
 const JWTStrategy   = passportJWT.Strategy;
 const ExtractJWT = passportJWT.ExtractJwt;
 
@@ -23,7 +24,7 @@ passport.use(new Strategy({
 
 passport.use(new JWTStrategy({
         jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
-        secretOrKey: 'your_jwt_secret'
+        secretOrKey: config.jwt_secret
     },
     function (jwtPayload, cb) {
         return UserModel.findById(jwtPayload._id)
@@ -35,3 +36,4 @@ passport.use(new JWTStrategy({
             });
     }
 ));
+
