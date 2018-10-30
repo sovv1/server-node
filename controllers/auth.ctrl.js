@@ -15,6 +15,7 @@ const signIn = (req, res, next) => {
                return next(err);
            }
            const token = jwt.sign(user.toJSON(), config.jwt_secret, { expiresIn: 604000 });
+           res.setHeader('Content-Type', 'application/json');
            return res.json({ user, token });
        });
     })(req, res);
