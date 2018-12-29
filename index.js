@@ -1,89 +1,49 @@
-#!/usr/bin/env node
 
-/**
- * Module dependencies.
- */
-import app from './app';
-const debug = require('debug')('node-trainee:server');
-const http = require('http');
+const PAGE = document.querySelector('.fun-page');
 
-/**
- * Get port from environment and store in Express.
- */
+const createOneSnow = () => {
+    const snow = document.createElement('img');
+    snow.setAttribute('src', './img/snowflake-.svg');
+    snow.classList.add('snow-svg');
+    return snow;
+};
 
-const port = normalizePort(process.env.PORT || '3030');
-app.set('port', port);
-
-/**
- * Create HTTP server.
- */
-
-const server = http.createServer(app);
-
-/**
- * Listen on provided port, on all network interfaces.
- */
-
-server.listen(port, () => console.log(`Server run on ${port} port.`));
-server.on('error', onError);
-server.on('listening', onListening);
-
-/**
- * Normalize a port into a number, string, or false.
- */
-
-function normalizePort(val) {
-    const port = parseInt(val, 10);
-
-    if (isNaN(port)) {
-        // named pipe
-        return val;
+const setupStyle = (snow) => {
+    const randomPositionX = Math.round(Math.random() * 100);
+    const randomAnimationTime = Math.round(Math.random() * 10);
+    const styles = {
+        left: `${randomPositionX}vw`,
+        top: `-5vh`,
+        transition: `all ${randomAnimationTime}s`,
+        transform: 'translateY(0)',
+        fill: `${getRandomColor()}`,
+    };
+    for (const style in styles) {
+        snow.style[style] = styles[style];
     }
+    return randomAnimationTime;
+};
 
-    if (port >= 0) {
-        // port number
-        return port;
-    }
+const beginAnimation = (snow) => {
+    snow.style.transform = `translateY(110vh) rotate(180deg)`;
+};
 
-    return false;
-}
+const insertIntoPage = (snow, index) => {
+    PAGE.appendChild(snow);
+    return setTimeout(() => beginAnimation(snow), index * 150);
+};
 
-/**
- * Event listener for HTTP server "error" event.
- */
+const getRandomColor = () => {
+    return `#${Math.floor(Math.random() * 16777215).toString(16)}`;
+};
 
-function onError(error) {
-    if (error.syscall !== 'listen') {
-        throw error;
-    }
+const createSnows = () => {
+    Array.from({ length: 1000 }, () => createOneSnow()).forEach((snow, index) => {
+        const time = setupStyle(snow);
+        const id = insertIntoPage(snow, index);
+        setTimeout(() => clearTimeout(id), time * 1000);
+    });
+    setTimeout(() => createSnows(), 150000);
+};
 
-    const bind = typeof port === 'string'
-        ? 'Pipe ' + port
-        : 'Port ' + port;
-
-    // handle specific listen errors with friendly messages
-    switch (error.code) {
-        case 'EACCES':
-            console.error(bind + ' requires elevated privileges');
-            process.exit(1);
-            break;
-        case 'EADDRINUSE':
-            console.error(bind + ' is already in use');
-            process.exit(1);
-            break;
-        default:
-            throw error;
-    }
-}
-
-/**
- * Event listener for HTTP server "listening" event.
- */
-
-function onListening() {
-    const addr = server.address();
-    const bind = typeof addr === 'string'
-        ? 'pipe ' + addr
-        : 'port ' + addr.port;
-    debug('Listening on ' + bind);
-}
+createSnows();
