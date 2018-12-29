@@ -6,7 +6,7 @@ import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 import compression from 'compression';
 import router from './routes';
-import './database';
+// import './database';
 import './helpers/passport';
 
 const app = express();
