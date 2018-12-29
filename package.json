@@ -24,12 +24,13 @@
     "pug": "2.0.0-beta11",
     "socket.io": "^2.1.1",
     "socketio-jwt": "^4.5.0",
-    "steem": "^0.7.2"
-  },
-  "devDependencies": {
+    "steem": "^0.7.2",
     "babel-cli": "^6.26.0",
     "babel-preset-env": "^1.7.0",
     "babel-preset-stage-2": "^6.24.1",
     "nodemon": "^1.18.4"
+  },
+  "devDependencies": {
+
   }
 }
