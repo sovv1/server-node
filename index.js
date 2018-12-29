@@ -3,7 +3,7 @@ const PAGE = document.querySelector('.fun-page');
 
 const createOneSnow = () => {
     const snow = document.createElement('img');
-    snow.setAttribute('src', './img/snowflake.svg');
+    snow.setAttribute('src', './static/snowflake.svg');
     snow.classList.add('snow-svg');
     return snow;
 };
