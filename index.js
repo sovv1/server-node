@@ -39,9 +39,8 @@ const getRandomColor = () => {
 
 const createSnows = () => {
     Array.from({ length: 1000 }, () => createOneSnow()).forEach((snow, index) => {
-        const time = setupStyle(snow);
-        const id = insertIntoPage(snow, index);
-        setTimeout(() => clearTimeout(id), time * 1000);
+        setupStyle(snow);
+        insertIntoPage(snow, index);
     });
     setTimeout(() => createSnows(), 150000);
 };
